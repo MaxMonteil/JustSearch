@@ -46,19 +46,8 @@ class ResultsCache {
 
 @Component
 export default class SearchController extends Vue {
+  // TYPING DELAY
   @Prop({ default: 500 }) readonly searchDelay!: number
-  @Prop({ default: 10 }) readonly resultsCacheSize!: number
-
-  error = ''
-  loading = false
-  resultsCache = new ResultsCache(this.resultsCacheSize)
-  results: SearchResults = {}
-
-  get noResultsFound (): boolean {
-    return Object.keys(this.results).length !== 0 &&
-      this.results?.totalResults == null
-  }
-
   private delayID!: number
 
   delaySearch () {
@@ -68,6 +57,15 @@ export default class SearchController extends Vue {
       this.delayID = setTimeout(() => resolve(), this.searchDelay)
     })
   }
+
+  // SEARCH
+  error = ''
+  loading = false
+
+  @Prop({ default: 10 }) readonly resultsCacheSize!: number
+  resultsCache = new ResultsCache(this.resultsCacheSize)
+
+  results: SearchResults = {}
 
   async submitSearch (query: string) {
     if (query.length === 0) {
@@ -92,6 +90,11 @@ export default class SearchController extends Vue {
     }
 
     this.loading = false
+  }
+
+  get noResultsFound (): boolean {
+    return Object.keys(this.results).length !== 0 &&
+      this.results.totalResults == null
   }
 
   beforeDestroy () {
