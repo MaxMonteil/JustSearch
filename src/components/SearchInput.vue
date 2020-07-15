@@ -1,20 +1,16 @@
 <template>
-  <div>
-    <h1>JustSearch</h1>
-
-    <form
-      @submit.prevent="$refs.search.blur()"
-      @keyup.esc="clearSearch"
+  <form
+    @submit.prevent="$refs.search.blur()"
+    @keyup.esc="clearSearch"
+  >
+    <input
+      v-model="query"
+      type="text"
+      ref="search"
+      @input="$emit('submit', query)"
     >
-      <input
-        v-model="query"
-        type="text"
-        ref="search"
-        @input="$emit('submit', query)"
-      >
-      <button type="submit">Search</button>
-    </form>
-  </div>
+    <button type="submit">Search</button>
+  </form>
 </template>
 
 <script lang="ts">

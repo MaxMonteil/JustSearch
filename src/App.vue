@@ -1,19 +1,25 @@
 <template>
-  <SearchController
-    v-slot="{ error, loading, results, noResults, submitSearch }"
-    class="hello"
-  >
-    <SearchInput @submit="submitSearch" />
+  <div>
+    <h1>JustSearch</h1>
 
-    <p v-if="error">{{ error }}</p>
+    <p>Your one stop shop to find out where you can stream your favorite movies and shows!</p>
 
-    <p v-if="loading">Loading...</p>
-    <div v-else>
-      <p v-if="noResults">0 results</p>
+    <SearchController
+      v-slot="{ error, loading, results, noResults, submitSearch }"
+      class="hello"
+    >
+      <SearchInput @submit="submitSearch" />
 
-      <ResultsList :results="results" />
-    </div>
-  </SearchController>
+      <p v-if="error">{{ error }}</p>
+
+      <p v-if="loading">Loading...</p>
+      <div v-else>
+        <p v-if="noResults">0 results</p>
+
+        <ResultsList :results="results" />
+      </div>
+    </SearchController>
+  </div>
 </template>
 
 <script lang="ts">
