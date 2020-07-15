@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+
 import SearchInput from './components/SearchInput.vue'
 import SearchController from './components/SearchController.vue'
 import ResultsList from './components/ResultsList.vue'
