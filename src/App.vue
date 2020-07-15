@@ -10,14 +10,8 @@
     <p v-if="loading">Loading...</p>
     <div v-else>
       <p v-if="noResults">0 results</p>
-      <ul>
-        <li
-          v-for="{ id, title } in results"
-          :key="id"
-        >
-          {{ title }}
-        </li>
-      </ul>
+
+      <ResultsList :results="results" />
     </div>
   </SearchController>
 </template>
@@ -26,11 +20,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 import SearchInput from './components/SearchInput.vue'
 import SearchController from './components/SearchController.vue'
+import ResultsList from './components/ResultsList.vue'
 
 @Component({
   components: {
     SearchInput,
-    SearchController
+    SearchController,
+    ResultsList
   }
 })
 export default class App extends Vue {}
