@@ -20,6 +20,7 @@ export async function Search (queryData: SearchQuery): Promise<string | SearchRe
           return Promise.reject(error)
         }
 
+        // rename snake case keys to camelCase for eslint
         const {
           total_results: totalResults,
           items
