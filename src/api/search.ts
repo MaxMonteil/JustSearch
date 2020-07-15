@@ -1,10 +1,6 @@
-import { SearchResults } from './SearchResults'
+import { SearchQuery, SearchResults } from './search.types'
 
-export interface SearchQuery {
-    query: string;
-}
-
-export async function search (queryData: SearchQuery): Promise<string | SearchResults> {
+export async function Search (queryData: SearchQuery): Promise<string | SearchResults> {
   const config = {
     method: 'POST',
     body: JSON.stringify(queryData),
@@ -27,7 +23,7 @@ export async function search (queryData: SearchQuery): Promise<string | SearchRe
         const {
           total_results: totalResults,
           items
-        }: { total_results: number; items: object[] } = data
+        }: { total_results: number; items: Array<object> } = data
 
         return { totalResults, items } as SearchResults
       } catch (e) {

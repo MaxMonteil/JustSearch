@@ -2,47 +2,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 
-import { search } from '../api/search'
-import { SearchResults } from '../api/SearchResults'
-
-/* This helps ensure that quick typing displays the right result since the query
- * is async, typing 'superman' quickly might actually show results for 'superm'.
- *
- * It has the added benefit of offering a cache for previous searches.
- */
-class ResultsCache {
-  private limit: number;
-  private items: Record<string, Promise<string | SearchResults>> = {}
-  private terms: Array<string> = []
-
-  constructor (limit = 10) {
-    this.limit = limit
-  }
-
-  public peek (): Promise<string | SearchResults> | object {
-    if (this.terms.length === 0) return {}
-
-    return this.items[this.terms[this.terms.length - 1]]
-  }
-
-  public includes (key: string): boolean {
-    return this.terms.includes(key)
-  }
-
-  public get (key: string): Promise<string | SearchResults> | object {
-    if (!this.includes(key)) return {}
-
-    return this.items[key]
-  }
-
-  public add (key: string, result: Promise<string | SearchResults>): void {
-    if (this.terms.includes(key)) return
-
-    this.items[key] = result
-    this.terms.push(key)
-    if (this.terms.length > this.limit) this.terms.unshift()
-  }
-}
+import { Search, SearchResults, ResultsCache } from '../api'
 
 @Component
 export default class SearchController extends Vue {
@@ -59,13 +19,12 @@ export default class SearchController extends Vue {
   }
 
   // SEARCH
-  error = ''
-  loading = false
+  private error = ''
+  private loading = false
 
   @Prop({ default: 10 }) readonly resultsCacheSize!: number
-  resultsCache = new ResultsCache(this.resultsCacheSize)
-
-  results: SearchResults = {}
+  private resultsCache = new ResultsCache(this.resultsCacheSize)
+  private results: SearchResults = {}
 
   async submitSearch (query: string) {
     if (query.length === 0) {
@@ -82,7 +41,7 @@ export default class SearchController extends Vue {
       this.results = (await this.resultsCache.get(query)) as SearchResults
     } else {
       try {
-        this.resultsCache.add(query, search({ query }))
+        this.resultsCache.add(query, Search({ query }))
         this.results = (await this.resultsCache.peek()) as SearchResults
       } catch (e) {
         this.error = e
@@ -97,7 +56,7 @@ export default class SearchController extends Vue {
       this.results.totalResults == null
   }
 
-  beforeDestroy () {
+  beforeDestroy (): void {
     clearTimeout(this.delayID)
   }
 
