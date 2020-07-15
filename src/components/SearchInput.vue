@@ -18,7 +18,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class SearchInput extends Vue {
-  query = ''
+  private query = ''
 
   clearSearch () {
     this.query = ''
