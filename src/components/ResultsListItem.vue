@@ -36,21 +36,23 @@ export default class ResultsListItem extends Vue {
   @Prop({ required: true }) readonly result!: ResultItem
 
   posterURL (url: string) {
+    // url -> /poster/some-number/{profile}
     const s = url.substring(0, url.lastIndexOf('/'))
-    return `https://images.justwatch.com${s}/s166`
+    return `${process.env.VUE_APP_IMAGES_URL}${s}/${process.env.VUE_APP_IMAGES_PROFILE}`
   }
 
   formatScores (scores: Array<RawScore>) {
     return scores.filter(({ provider_type: provider }) => provider.endsWith('score'))
   }
 
+  private monetizationType = 'flatrate'
   filterAndFormatOffers (offers: Array<RawOffer>) {
     offers = offers || []
     const streamOffers = offers
-      .filter(({ monetization_type: monetization }) => monetization === 'flatrate') // get those with streaming offers
-      .map(({ urls: { standard_web: url } }) => url) // keep url
+      .filter(({ monetization_type: monetization }) => monetization === this.monetizationType)
+      .map(({ urls: { standard_web: url } }) => url)
 
-    const links = [...new Set(streamOffers)] // dedup links
+    const links = [...new Set(streamOffers)]
 
     return links.map(link => ({
       service: getServiceName(link),
