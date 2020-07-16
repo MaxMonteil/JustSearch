@@ -1,16 +1,10 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-import { Search, ResultsCache } from '../api'
-import { SearchQuery, SearchResults } from '../api/search.types'
+import Vuex, { StoreOptions } from 'vuex'
+
+import { RootState } from './types'
+import { Search, ResultsCache, SearchQuery } from '../api'
 
 Vue.use(Vuex)
-
-interface RootState {
-  resultsCacheSize: number;
-  resultsCache: ResultsCache;
-  searchResults: SearchResults;
-  error: string;
-}
 
 const state: RootState = {
   resultsCacheSize: 10,
@@ -19,7 +13,7 @@ const state: RootState = {
   error: ''
 }
 
-export default new Vuex.Store({
+const store: StoreOptions<RootState> = {
   state,
   getters: {
     noResultsFound (state): boolean {
@@ -28,21 +22,24 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    createResultsCache (state, cacheSize) {
+      state.resultsCache = new ResultsCache(cacheSize || state.resultsCacheSize)
+    },
     saveSearchResults (state, searchResults) {
       state.searchResults = searchResults
     },
-    setError (state, error = '') {
+    setError (state, error) {
       state.error = error
     }
   },
   actions: {
-    init ({ state }, { cacheSize }) {
+    init ({ state, commit }, { cacheSize }) {
       if (state.resultsCache.size !== cacheSize) {
-        state.resultsCache = new ResultsCache(cacheSize)
+        commit('createResultsCache', cacheSize)
       }
     },
     async submitSearch ({ state, commit }, { query }: SearchQuery) {
-      commit('setError')
+      commit('setError', '')
 
       if (state.resultsCache.includes(query)) {
         commit('saveSearchResults', await state.resultsCache.get(query))
@@ -59,4 +56,6 @@ export default new Vuex.Store({
       commit('saveSearchResults', {})
     }
   }
-})
+}
+
+export default new Vuex.Store<RootState>(store)
