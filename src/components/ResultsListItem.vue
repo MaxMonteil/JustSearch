@@ -57,14 +57,15 @@ import { RawScore, RawOffer, ResultItem } from '../api/search.types'
 const getServiceName = (url: string): string => new URL(url).hostname.split('.').splice(-2, 1)[0]
 
 function filterAndFormatOffers (offers: Array<RawOffer>, monetizationType: string) {
-  offers = offers || []
+  if (offers == null) return []
+
   const streamOffers = offers
     .filter(({ monetization_type: monetization }) => monetization === monetizationType)
     .map(({ urls: { standard_web: url } }) => url)
 
-  const links = [...new Set(streamOffers)]
+  const uniqueLinks = [...new Set(streamOffers)]
 
-  return links.map(link => ({
+  return uniqueLinks.map(link => ({
     service: getServiceName(link),
     url: link
   }))
@@ -84,6 +85,8 @@ export default class ResultsListItem extends Vue {
   }
 
   posterURL (url: string) {
+    if (url == null) return './images/poster-placeholder.png'
+
     // url -> /poster/some-number/{profile}
     const s = url.substring(0, url.lastIndexOf('/'))
     return `${process.env.VUE_APP_IMAGES_URL}${s}/${process.env.VUE_APP_IMAGES_PROFILE}`

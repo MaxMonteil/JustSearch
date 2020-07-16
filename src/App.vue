@@ -1,5 +1,5 @@
 <template>
-  <div id="top" class="flex flex-col items-center justify-between min-h-screen p-4 text-gray-500 bg-gray-900">
+  <div class="flex flex-col items-center justify-between min-h-screen p-4 text-gray-500 bg-gray-900">
     <main class="flex flex-col items-center w-full mt-12 space-y-4">
       <h1 class="text-6xl font-bold leading-none tracking-wide text-blue-700 sexy">
         JustSearch
@@ -24,12 +24,12 @@
         <div v-if="!loading && !error">
           <div v-if="noResults">
             <p>We couldn't find any results for</p>
-            <p class="text-xl font-bold text-white">
-              {{ searchTerm }}
-            </p>
           </div>
 
-          <ResultsList :results="results" />
+          <ResultsList
+            :results="results"
+            :search-term="searchTerm"
+          />
 
         </div>
       </SearchController>
