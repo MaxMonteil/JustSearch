@@ -4,10 +4,10 @@
     @keyup.esc="clearSearch"
   >
     <input
-      v-model="query"
+      v-model="queryData.query"
       type="text"
       ref="search"
-      @input="$emit('submit', query)"
+      @input="$emit('submit', queryData)"
     >
     <button type="submit">Search</button>
   </form>
@@ -16,13 +16,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
+import { SearchQuery } from '../api'
+
 @Component
 export default class SearchInput extends Vue {
-  private query = ''
+  private queryData: SearchQuery = {
+    query: ''
+  }
 
   clearSearch () {
-    this.query = ''
-    this.$emit('submit', this.query)
+    this.queryData.query = ''
+    this.$emit('submit', this.queryData)
   }
 }
 </script>

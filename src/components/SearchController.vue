@@ -2,10 +2,15 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 
-import { Search, SearchResults, ResultsCache } from '../api'
+import { SearchQuery } from '../api'
 
 @Component
 export default class SearchController extends Vue {
+  @Prop({ default: 10 }) readonly resultsCacheSize!: number
+  created () {
+    this.$store.dispatch('init', { cacheSize: this.resultsCacheSize })
+  }
+
   // TYPING DELAY
   @Prop({ default: 500 }) readonly searchDelay!: number
   private delayID!: number
@@ -19,41 +24,19 @@ export default class SearchController extends Vue {
   }
 
   // SEARCH
-  private error = ''
   private loading = false
 
-  @Prop({ default: 10 }) readonly resultsCacheSize!: number
-  private resultsCache = new ResultsCache(this.resultsCacheSize)
-  private results: SearchResults = {}
-
-  async submitSearch (query: string) {
-    if (query.length === 0) {
-      this.results = {}
+  async submitSearch (queryData: SearchQuery) {
+    if (queryData.query.length === 0) {
+      this.$store.dispatch('clearSearch')
       return
     }
 
     await this.delaySearch()
 
     this.loading = true
-    this.error = ''
-
-    if (this.resultsCache.includes(query)) {
-      this.results = (await this.resultsCache.get(query)) as SearchResults
-    } else {
-      try {
-        this.resultsCache.add(query, Search({ query }))
-        this.results = (await this.resultsCache.peek()) as SearchResults
-      } catch (e) {
-        this.error = e
-      }
-    }
-
+    await this.$store.dispatch('submitSearch', queryData)
     this.loading = false
-  }
-
-  get noResultsFound (): boolean {
-    return Object.keys(this.results).length !== 0 &&
-      this.results.totalResults == null
   }
 
   beforeDestroy (): void {
@@ -65,10 +48,10 @@ export default class SearchController extends Vue {
       'div',
       // eslint-disable-next-line
       this.$scopedSlots.default!({
-        error: this.error,
+        error: this.$store.state.error,
         loading: this.loading,
-        results: this.results.items,
-        noResults: this.noResultsFound,
+        results: this.$store.state.searchResults.items,
+        noResults: this.$store.getters.noResultsFound,
         submitSearch: this.submitSearch
       })
     )

@@ -6,12 +6,16 @@ import { SearchResults } from './search.types'
  * It has the added benefit of offering a cache for previous searches.
  */
 export class ResultsCache {
-  private limit: number;
+  private _size: number;
   private items: Record<string, Promise<string | SearchResults>> = {}
   private terms: Array<string> = []
 
-  constructor (limit = 10) {
-    this.limit = limit
+  constructor (size = 10) {
+    this._size = size
+  }
+
+  get size () {
+    return this._size
   }
 
   public peek (): Promise<string | SearchResults> | object {
@@ -35,6 +39,6 @@ export class ResultsCache {
 
     this.items[key] = result
     this.terms.push(key)
-    if (this.terms.length > this.limit) this.terms.unshift()
+    if (this.terms.length > this._size) this.terms.unshift()
   }
 }
