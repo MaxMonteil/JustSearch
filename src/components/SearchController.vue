@@ -25,7 +25,7 @@ export default class SearchController extends Vue {
 
   // SEARCH
   private loading = false
-
+  private searchTerm = ''
   async submitSearch (queryData: SearchQuery) {
     if (queryData.query.length === 0) {
       this.$store.dispatch('clearSearch')
@@ -35,6 +35,7 @@ export default class SearchController extends Vue {
     await this.delaySearch()
 
     this.loading = true
+    this.searchTerm = queryData.query
     await this.$store.dispatch('submitSearch', queryData)
     this.loading = false
   }
@@ -50,7 +51,8 @@ export default class SearchController extends Vue {
       this.$scopedSlots.default!({
         error: this.$store.state.error,
         loading: this.loading,
-        results: this.$store.state.searchResults.items,
+        searchTerm: this.searchTerm,
+        results: this.$store.state.searchResults,
         noResults: this.$store.getters.noResultsFound,
         submitSearch: this.submitSearch
       })

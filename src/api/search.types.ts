@@ -16,11 +16,11 @@ export interface RawOffer {
 }
 
 export interface ResultItem {
-    id: number;
+    jw_identity_id: number;
     title: string;
     object_type: string;
-    scoring: RawScore;
-    offers: RawOffer;
+    scoring: Array<RawScore>;
+    offers: Array<RawOffer>;
     poster: string;
     original_release_year: number;
 }
