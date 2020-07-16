@@ -5,7 +5,7 @@
         JustSearch
       </h1>
 
-      <p class="max-w-xs leading-tight text-center text-white">
+      <p class="max-w-xs leading-tight text-center text-white md:max-w-screen-lg md:text-lg">
         Your one stop shop to find out where you can stream your favorite movies and shows!
       </p>
 
