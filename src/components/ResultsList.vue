@@ -6,17 +6,20 @@
     Start searching!
   </p>
 
-  <ul
-    v-else
-    class="px-2 space-y-6"
-  >
-    <li
-      v-for="result in results.items"
-      :key="result.jw_identity_id"
-    >
-      <ResultsListItem :result="result" />
-    </li>
-  </ul>
+  <div v-else>
+    <h2 class="mb-2 text-2xl font-bold text-white">
+      {{ searchTerm }}
+    </h2>
+
+    <ul class="px-2 space-y-6">
+      <li
+        v-for="result in results.items"
+        :key="result.jw_identity_id"
+      >
+        <ResultsListItem :result="result" />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -32,6 +35,7 @@ import ResultsListItem from './ResultsListItem.vue'
   }
 })
 export default class ResultsList extends Vue {
+  @Prop({ required: true }) readonly searchTerm!: string
   @Prop({ required: true }) readonly results!: SearchResults
 
   private testResults: SearchResults = {

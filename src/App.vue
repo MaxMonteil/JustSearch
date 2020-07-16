@@ -24,12 +24,12 @@
         <div v-if="!loading && !error">
           <div v-if="noResults">
             <p>We couldn't find any results for</p>
-            <p class="text-xl font-bold text-white">
-              {{ searchTerm }}
-            </p>
           </div>
 
-          <ResultsList :results="results" />
+          <ResultsList
+            :results="results"
+            :search-term="searchTerm"
+          />
 
         </div>
       </SearchController>
