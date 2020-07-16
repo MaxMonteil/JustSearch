@@ -4,6 +4,8 @@ An interview challenge that required the use of VueJS, Typescript, and Vuex to o
 
 A super fun project and finally a chance to get into Typescript.
 
+I have deployed the site to netlify [here](https://justwatch.netlify.app/) but it doesn't seem like their API is accepting requests from that origin.
+
 ## Project setup
 
 **Very Important** Don't forget to copy the `env.example` file to a `.env.local` one, the app expects to be able to find a couple of environment variables there.
