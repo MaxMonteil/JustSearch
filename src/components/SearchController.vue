@@ -35,7 +35,7 @@ export default class SearchController extends Vue {
     await this.delaySearch()
 
     this.loading = true
-    this.$store.dispatch('submitSearch', queryData)
+    await this.$store.dispatch('submitSearch', queryData)
     this.loading = false
   }
 
