@@ -7,7 +7,7 @@
     >
       <input
         class="flex-grow p-2 pl-6 text-lg text-gray-200 bg-blue-900 rounded-l-full focus:outline-none"
-        v-model="queryData.query"
+        v-model.trim="queryData.query"
         type="text"
         ref="search"
         @input="$emit('submit', queryData)"
