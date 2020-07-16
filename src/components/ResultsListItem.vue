@@ -84,6 +84,8 @@ export default class ResultsListItem extends Vue {
   }
 
   posterURL (url: string) {
+    if (url == null) return './images/poster-placeholder.png'
+
     // url -> /poster/some-number/{profile}
     const s = url.substring(0, url.lastIndexOf('/'))
     return `${process.env.VUE_APP_IMAGES_URL}${s}/${process.env.VUE_APP_IMAGES_PROFILE}`
