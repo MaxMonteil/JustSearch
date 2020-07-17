@@ -7,7 +7,6 @@ import { Search, ResultsCache, SearchQuery } from '../api'
 Vue.use(Vuex)
 
 const state: RootState = {
-  resultsCacheSize: 10,
   resultsCache: new ResultsCache(),
   searchResults: {},
   error: ''
@@ -23,7 +22,7 @@ const store: StoreOptions<RootState> = {
   },
   mutations: {
     createResultsCache (state, cacheSize) {
-      state.resultsCache = new ResultsCache(cacheSize || state.resultsCacheSize)
+      state.resultsCache = new ResultsCache(cacheSize)
     },
     saveSearchResults (state, searchResults) {
       state.searchResults = searchResults
@@ -33,10 +32,8 @@ const store: StoreOptions<RootState> = {
     }
   },
   actions: {
-    init ({ state, commit }, { cacheSize }) {
-      if (state.resultsCache.size !== cacheSize) {
-        commit('createResultsCache', cacheSize)
-      }
+    init ({ commit }, cacheSize: number) {
+      commit('createResultsCache', cacheSize)
     },
     async submitSearch ({ state, commit }, { query }: SearchQuery) {
       commit('setError', '')

@@ -6,9 +6,9 @@ import { SearchQuery } from '../api'
 
 @Component
 export default class SearchController extends Vue {
-  @Prop({ default: 10 }) readonly resultsCacheSize!: number
+  @Prop({ default: 10 }) readonly cacheSize!: number
   created () {
-    this.$store.dispatch('init', { cacheSize: this.resultsCacheSize })
+    this.$store.dispatch('init', this.cacheSize)
   }
 
   // TYPING DELAY
