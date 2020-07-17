@@ -35,10 +35,12 @@ export class ResultsCache {
   }
 
   public add (key: string, result: Promise<string | SearchResults>): void {
-    if (this.terms.includes(key)) return
+    if (this.terms.includes(key) || key.trim().length === 0) return
 
     this.items[key] = result
     this.terms.push(key)
-    if (this.terms.length > this._size) this.terms.unshift()
+    if (this.terms.length > this._size) {
+      delete this.items[this.terms.splice(0, 1)[0]]
+    }
   }
 }
