@@ -6,12 +6,15 @@
     Start searching!
   </p>
 
-  <div v-else>
-    <h2 class="mb-2 text-2xl font-bold text-white">
+  <div
+    class="mx-auto"
+    v-else
+  >
+    <h2 class="mx-auto mb-2 text-2xl font-bold text-white max-w-screen-xl">
       {{ searchTerm }}
     </h2>
 
-    <ul class="px-2 space-y-6">
+    <ul class="px-2 mx-auto space-y-6 md:space-y-0 md:gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 lg:max-w-screen-xl">
       <li
         v-for="result in results.items"
         :key="result.jw_identity_id"

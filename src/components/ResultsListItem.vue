@@ -1,5 +1,5 @@
 <template>
-  <section class="flex bg-gray-800 rounded-md space-x-3">
+  <section class="flex mx-auto bg-gray-800 sm:max-w-lg lg:max-w-md rounded-md space-x-3">
     <img
       class="w-1/3 rounded-l-md"
       :src="posterURL(result.poster)"
@@ -12,7 +12,7 @@
             <span class="text-blue-500">{{ result.object_type }}</span>
             - {{ result.original_release_year }}
           </p>
-          <h2 class="text-xl leading-tight text-white truncate">{{ result.title }}</h2>
+          <h2 class="text-xl leading-tight text-white truncate lg:text-2xl">{{ result.title }}</h2>
         </div>
 
         <ul class="flex mt-2 space-x-4">
@@ -22,7 +22,7 @@
             :key="provider_type"
           >
             <img width="16" class="inline" :src="providerLogo(provider_type)" :alt="provider_type">
-            <p class="inline text-sm text-white">{{ value }}</p>
+            <p class="inline text-sm text-white md:text-base">{{ value }}</p>
           </li>
         </ul>
       </div>
