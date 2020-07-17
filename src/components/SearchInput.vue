@@ -5,7 +5,14 @@
       @submit.prevent="$refs.search.blur()"
       @keyup.esc="clearSearch"
     >
+      <label
+        for="search"
+        class="sr-only"
+      >
+        Search for a show or movie
+      </label>
       <input
+        id="search"
         class="flex-grow p-2 pl-6 text-lg text-gray-200 bg-blue-900 rounded-l-full focus:outline-none"
         v-model.trim="queryData.query"
         type="text"
