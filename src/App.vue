@@ -22,7 +22,10 @@
         </div>
 
         <div v-if="!loading && !error">
-          <div v-if="noResults">
+          <div
+            v-if="noResults"
+            class="mx-auto max-w-screen-xl"
+          >
             <p>We couldn't find any results for</p>
           </div>
 
